@@ -1,21 +1,17 @@
-// components/InputField.js
+// InputField.js
 import React from 'react';
 
-const InputField = ({ label, id, name, type = "text", required = false }) => {
-  return (
-    <div>
-      <label htmlFor={id} className="block text-sm font-medium text-gray-700">
-        {label}
-      </label>
-      <input
-        type={type}
-        id={id}
-        name={name}
-        required={required}
-        className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-      />
-    </div>
-  );
-};
+const InputField = ({ id, type, label, value, onChange }) => (
+  <div className="flex flex-col">
+    <label htmlFor={id} className="mb-1 font-semibold text-gray-700">{label}</label>
+    <input
+      id={id}
+      type={type}
+      value={value}
+      onChange={onChange}
+      className="border border-gray-300 p-2 rounded"
+    />
+  </div>
+);
 
 export default InputField;

@@ -1,7 +1,6 @@
-// pages/register.js
 "use client";
 import React, { useState } from 'react';
-import InputField from '@components/InputField'; // Adjust the path as needed
+import InputField from '../input/page'; // Ensure this path is correct
 import axios from 'axios';
 
 const Register = () => {
@@ -11,10 +10,13 @@ const Register = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     if (!name || !email || !password) {
-      alert('Please fill in all fields');
+    //   console.log(name);
+      alert('Please fill in all fields'+{name}+{email}+"hello");
       return;
     }
+
     try {
       const response = await axios.post('http://localhost:5000/api/auth/register', {
         name,
@@ -22,9 +24,11 @@ const Register = () => {
         password,
       });
       // Handle successful registration (e.g., redirect to login)
-      console.log(response.data);
+      console.log('Registration successful:', response.data);
+      // Optionally redirect to login page
+      // window.location.href = '/login';
     } catch (error) {
-      console.error('Error registering:', error);
+      console.error('Error registering:', error.response ? error.response.data : error.message);
     }
   };
 
