@@ -1,7 +1,7 @@
-// pages/login.js
 "use client";
 import React, { useState } from 'react';
-import InputField from '../input/page';
+import InputField from '@components/InputField'; // Adjust the path as needed
+import axios from 'axios';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -9,27 +9,19 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     if (!email || !password) {
-      alert("Please fill all the fields");
+      alert('Please fill in all fields');
       return;
     }
-
     try {
-      const response = await fetch('/api/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email, password }),
+      const response = await axios.post('http://localhost:5000/api/auth/login', {
+        email,
+        password,
       });
-      if (response.ok) {
-        // Handle successful login
-      } else {
-        // Handle login error
-      }
+      // Handle successful login (e.g., store token, redirect)
+      console.log(response.data);
     } catch (error) {
-      // Handle network error
+      console.error('Error logging in:', error);
     }
   };
 
@@ -39,22 +31,18 @@ const Login = () => {
         <h1 className="text-2xl font-bold mb-6 text-center">Login</h1>
         <form className="space-y-4" onSubmit={handleSubmit}>
           <InputField
-            label="Email"
             id="email"
-            name="email"
             type="email"
+            label="Email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            required={true}
           />
           <InputField
-            label="Password"
             id="password"
-            name="password"
             type="password"
+            label="Password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            required={true}
           />
           <button
             type="submit"

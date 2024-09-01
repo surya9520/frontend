@@ -1,8 +1,8 @@
 // pages/register.js
 "use client";
 import React, { useState } from 'react';
-import InputField from '../input/page';
-import Link from 'next/link';
+import InputField from '@components/InputField'; // Adjust the path as needed
+import axios from 'axios';
 
 const Register = () => {
   const [name, setName] = useState('');
@@ -11,22 +11,20 @@ const Register = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+    if (!name || !email || !password) {
+      alert('Please fill in all fields');
+      return;
+    }
     try {
-      const response = await fetch('/api/register', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ name, email, password }),
+      const response = await axios.post('http://localhost:5000/api/auth/register', {
+        name,
+        email,
+        password,
       });
-      if (response.ok) {
-        // Handle successful registration
-      } else {
-        // Handle registration error
-      }
+      // Handle successful registration (e.g., redirect to login)
+      console.log(response.data);
     } catch (error) {
-      // Handle network error
+      console.error('Error registering:', error);
     }
   };
 
@@ -36,30 +34,25 @@ const Register = () => {
         <h1 className="text-2xl font-bold mb-6 text-center">Register</h1>
         <form className="space-y-4" onSubmit={handleSubmit}>
           <InputField
-            label="Name"
             id="name"
-            name="name"
+            type="text"
+            label="Name"
             value={name}
             onChange={(e) => setName(e.target.value)}
-            required={true}
           />
           <InputField
-            label="Email"
             id="email"
-            name="email"
             type="email"
+            label="Email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            required={true}
           />
           <InputField
-            label="Password"
             id="password"
-            name="password"
             type="password"
+            label="Password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            required={true}
           />
           <button
             type="submit"
@@ -77,9 +70,9 @@ const Register = () => {
         <div className="mt-6 text-center">
           <p className="text-sm text-gray-600">
             Already have an account?{' '}
-            <Link href="/login" className="text-indigo-600 hover:text-indigo-700">
+            <a href="/login" className="text-indigo-600 hover:text-indigo-700">
               Login
-            </Link>
+            </a>
           </p>
         </div>
       </div>
